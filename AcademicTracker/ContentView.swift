@@ -2,23 +2,35 @@
 //  ContentView.swift
 //  AcademicTracker
 //
-//  Created by Daniel Ceron on 4/18/26.
+//  Root tab container. Reads CourseManager from the environment.
 //
 
 import SwiftUI
 
 struct ContentView: View {
+    @EnvironmentObject var course: CourseManager
+
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        TabView {
+            StudentsView()
+                .tabItem { Label("Estudiantes", systemImage: "person.3.fill") }
+
+            ActivitiesView()
+                .tabItem { Label("Actividades", systemImage: "doc.text.fill") }
+
+            GradesView()
+                .tabItem { Label("Calificaciones", systemImage: "checklist") }
+
+            ReportsView()
+                .tabItem { Label("Reportes", systemImage: "chart.bar.fill") }
+
+            AlertsView()
+                .tabItem { Label("Alertas", systemImage: "bell.badge.fill") }
         }
-        .padding()
     }
 }
 
 #Preview {
     ContentView()
+        .environmentObject(CourseManager())
 }
