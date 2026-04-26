@@ -6,7 +6,7 @@
 import SwiftUI
 
 struct AlertsView: View {
-    @EnvironmentObject var course: CourseManager
+    @Environment(CourseStore.self) private var course
 
     var body: some View {
         NavigationStack {
@@ -47,7 +47,7 @@ struct AlertsView: View {
 }
 
 private struct AlertRow: View {
-    let alert: CourseManager.AcademicAlert
+    let alert: AcademicAlert
 
     var body: some View {
         HStack(alignment: .top, spacing: 12) {

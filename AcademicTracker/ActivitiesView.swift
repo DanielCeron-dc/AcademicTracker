@@ -6,14 +6,14 @@
 import SwiftUI
 
 struct ActivitiesView: View {
-    @EnvironmentObject var course: CourseManager
+    @Environment(CourseStore.self) private var course
     @State private var showingAdd = false
 
     var body: some View {
         NavigationStack {
             List {
                 Section {
-                    ForEach(course.activities) { a in
+                    ForEach(course.allActivities) { a in
                         HStack {
                             VStack(alignment: .leading, spacing: 2) {
                                 Text(a.name).font(.headline)
@@ -28,7 +28,7 @@ struct ActivitiesView: View {
                         }
                     }
                     .onDelete { idx in
-                        idx.map { course.activities[$0] }.forEach(course.removeActivity)
+                        idx.map { course.allActivities[$0] }.forEach(course.removeActivity)
                     }
                 } footer: {
                     HStack {
@@ -54,7 +54,7 @@ struct ActivitiesView: View {
                 AddActivitySheet()
             }
             .overlay {
-                if course.activities.isEmpty {
+                if course.allActivities.isEmpty {
                     ContentUnavailableView(
                         "Sin actividades",
                         systemImage: "doc.text",
@@ -67,7 +67,7 @@ struct ActivitiesView: View {
 }
 
 private struct AddActivitySheet: View {
-    @EnvironmentObject var course: CourseManager
+    @Environment(CourseStore.self) private var course
     @Environment(\.dismiss) private var dismiss
 
     @State private var name = ""

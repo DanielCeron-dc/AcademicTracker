@@ -6,7 +6,7 @@
 import SwiftUI
 
 struct ReportsView: View {
-    @EnvironmentObject var course: CourseManager
+    @Environment(CourseStore.self) private var course
 
     var body: some View {
         NavigationStack {
@@ -50,7 +50,7 @@ struct ReportsView: View {
                 }
 
                 Section("Listado completo") {
-                    ForEach(course.students.sorted { a, b in
+                    ForEach(course.allStudents.sorted { a, b in
                         course.weightedAverage(for: a) > course.weightedAverage(for: b)
                     }) { student in
                         HStack {

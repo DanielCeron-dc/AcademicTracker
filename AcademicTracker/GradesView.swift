@@ -8,19 +8,19 @@
 import SwiftUI
 
 struct GradesView: View {
-    @EnvironmentObject var course: CourseManager
+    @Environment(CourseStore.self) private var course
     @State private var selectedActivity: Activity?
 
     var body: some View {
         NavigationStack {
             Group {
-                if course.activities.isEmpty {
+                if course.allActivities.isEmpty {
                     ContentUnavailableView(
                         "Sin actividades",
                         systemImage: "checklist",
                         description: Text("Crea una actividad antes de calificar.")
                     )
-                } else if course.students.isEmpty {
+                } else if course.allStudents.isEmpty {
                     ContentUnavailableView(
                         "Sin estudiantes",
                         systemImage: "person.3",
@@ -31,7 +31,7 @@ struct GradesView: View {
                         Section("Actividad") {
                             Picker("Seleccionar", selection: $selectedActivity) {
                                 Text("— Elegir —").tag(Optional<Activity>.none)
-                                ForEach(course.activities) { a in
+                                ForEach(course.allActivities) { a in
                                     Text(a.name).tag(Optional(a))
                                 }
                             }
@@ -39,7 +39,7 @@ struct GradesView: View {
 
                         if let activity = selectedActivity {
                             Section("Calificaciones — máx \(activity.maxScore.formatted2())") {
-                                ForEach(course.students) { student in
+                                ForEach(course.allStudents) { student in
                                     GradeRow(student: student, activity: activity)
                                 }
                             }
@@ -53,7 +53,7 @@ struct GradesView: View {
 }
 
 private struct GradeRow: View {
-    @EnvironmentObject var course: CourseManager
+    @Environment(CourseStore.self) private var course
     let student: Student
     let activity: Activity
 

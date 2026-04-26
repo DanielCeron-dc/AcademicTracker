@@ -2,13 +2,13 @@
 //  ContentView.swift
 //  AcademicTracker
 //
-//  Root tab container. Reads CourseManager from the environment.
+//  Root tab container. Reads `CourseStore` from the environment.
 //
 
 import SwiftUI
 
 struct ContentView: View {
-    @EnvironmentObject var course: CourseManager
+    @Environment(CourseStore.self) private var course
 
     var body: some View {
         TabView {
@@ -32,5 +32,5 @@ struct ContentView: View {
 
 #Preview {
     ContentView()
-        .environmentObject(CourseManager())
+        .environment(CourseStore())
 }

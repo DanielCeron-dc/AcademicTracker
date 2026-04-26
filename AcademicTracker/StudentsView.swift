@@ -6,13 +6,13 @@
 import SwiftUI
 
 struct StudentsView: View {
-    @EnvironmentObject var course: CourseManager
+    @Environment(CourseStore.self) private var course
     @State private var showingAdd = false
 
     var body: some View {
         NavigationStack {
             List {
-                ForEach(course.students) { student in
+                ForEach(course.allStudents) { student in
                     HStack {
                         VStack(alignment: .leading, spacing: 2) {
                             Text(student.name).font(.headline)
@@ -29,7 +29,7 @@ struct StudentsView: View {
                     }
                 }
                 .onDelete { idx in
-                    idx.map { course.students[$0] }.forEach(course.removeStudent)
+                    idx.map { course.allStudents[$0] }.forEach(course.removeStudent)
                 }
             }
             .navigationTitle("Estudiantes")
@@ -44,7 +44,7 @@ struct StudentsView: View {
                 AddStudentSheet()
             }
             .overlay {
-                if course.students.isEmpty {
+                if course.allStudents.isEmpty {
                     ContentUnavailableView(
                         "Sin estudiantes",
                         systemImage: "person.3",
@@ -57,7 +57,7 @@ struct StudentsView: View {
 }
 
 private struct AddStudentSheet: View {
-    @EnvironmentObject var course: CourseManager
+    @Environment(CourseStore.self) private var course
     @Environment(\.dismiss) private var dismiss
     @State private var code = ""
     @State private var name = ""
